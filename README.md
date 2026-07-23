@@ -35,26 +35,18 @@ Multi-Agent-Secure-Exam-System/
 ## Requirements
 
 - Python 3.10+ (project was built/tested on Python 3.12)
+- [uv](https://docs.astral.sh/uv/) installed
 - A webcam (for webcam monitoring) and a display (for screen streaming)
-- pip
 
 ## 1. Setup
 
 Clone/unzip the project, then from the project root (`Multi-Agent-Secure-Exam-System/`):
 
-### Windows
 ```bash
-python -m venv .venv
-.venv\Scripts\activate
-pip install -r requirements.txt
+uv sync
 ```
 
-### macOS / Linux
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-```
+(or `uv pip install -r requirements.txt` if you're not using a `uv` project/lockfile)
 
 This installs FastAPI, Uvicorn, OpenCV, NumPy, Ultralytics (YOLOv8, pulls in
 PyTorch automatically), websockets, aiohttp, and mss.
@@ -65,7 +57,7 @@ Run this from the **project root** (not from inside `backend/`), since paths
 like `backend/static` and `backend/templates` are relative to it:
 
 ```bash
-uvicorn backend.app:app --reload --host 0.0.0.0 --port 8000
+uv run uvicorn backend.app:app --reload
 ```
 
 - Backend root check: http://127.0.0.1:8000/
@@ -76,11 +68,10 @@ Leave this running in its own terminal.
 
 ## 3. Run a Student Agent
 
-In a **separate terminal** (with the same virtual environment activated), from
-the project root:
+In a **separate terminal**, from the project root:
 
 ```bash
-python student/agents/streaming/stream_client.py
+uv run student/agents/streaming/stream_client.py
 ```
 
 You'll be prompted:
@@ -101,7 +92,7 @@ simulate multiple students connecting at once.
 To just test screen capture locally without connecting to the backend:
 
 ```bash
-python student/agents/streaming/screen_capture.py
+uv run student/agents/streaming/screen_capture.py
 ```
 
 Press `q` in the preview window to quit.
@@ -120,8 +111,8 @@ Press `q` in the preview window to quit.
 
 ## Troubleshooting
 
-- **`ModuleNotFoundError`**: make sure the virtual environment is activated
-  and `pip install -r requirements.txt` completed without errors.
+- **`ModuleNotFoundError`**: make sure `uv sync` (or `uv pip install -r requirements.txt`)
+  completed without errors.
 - **Static files error on startup**: ensure you run uvicorn from the project
   root so `backend/static` and `backend/templates` resolve correctly.
 - **Webcam not found**: check no other application is using the webcam and
